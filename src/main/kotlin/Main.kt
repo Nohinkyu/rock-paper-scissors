@@ -2,27 +2,24 @@ fun main(args: Array<String>) {
     var shouldRestart = true
 
     while (shouldRestart){
-        gameStart()
-        shouldRestart = reGame()
+        startGame()
+        shouldRestart = checkRestartGame()
     }
 }
 
-fun genElem ():String{
+fun choiceRandomRps ():String{
     val elem = listOf("rock", "paper", "scissors")
     return elem.random()
 }
 
-fun genTwoElem(): List<String>{
-    var twoElem = mutableListOf<String>()
-    twoElem.add(genElem())
-    twoElem.add(genElem())
+fun choiceTwoRandomRps(): Set<String>{
+    var twoElem = mutableSetOf<String>()
+    while (twoElem.size < 2)
+        twoElem.add(choiceRandomRps())
     return twoElem
 }
 
-fun computerChoiceElem(computerInput : List<String>) : String{
-    val computerChoice = computerInput
-    return computerChoice.random()
-}
+
 
 
 fun readText():String{
@@ -34,7 +31,7 @@ fun readText():String{
     return input
 }
 
-fun gameResult(userInput:String, opposite:String):String{
+fun judgeGame(userInput:String, opposite:String):String{
     val result = listOf("Draw", "Lose", "Win")
     if (userInput == opposite){
         return result[0]
@@ -67,28 +64,27 @@ fun readSecondText(userInput1:List<String>):String{
     return input
 }
 
-fun gameStart(){
-    val computerElem = genTwoElem()
+fun startGame(){
+    val computerElem = choiceTwoRandomRps()
 
     println("가위바위보 하나빼기 게임에 오신것을 환영합니다.")
     println("rock, paper, scissors 중 두가지를 정확히 입력해주세요.")
     println("첫번째 값을 입력해 주세요.")
     val userElem =readTwoText()
-    userElem
 
     println("컴퓨터는 $computerElem 을 냈습니다.")
     println("유저님은 $userElem 을 냈습니다")
     println("$userElem 중 하나를 입력해주세요")
-    val computer = computerChoiceElem(computerElem)
+    val computerChoice = computerElem.random()
     val userChoice = readSecondText(userElem)
-    userChoice
-    println("컴퓨터는 $computer 를 냈습니다")
+
+    println("컴퓨터는 $computerChoice 를 냈습니다")
     println("유저님은 $userChoice 를 냈습니다")
-    println(gameResult(userChoice, computer))
+    println(judgeGame(userChoice, computerChoice))
 
 }
 
-fun reGame() :Boolean {
+fun checkRestartGame() :Boolean {
     println("게임을 다시 시작하시겠습니까?[Y/N]")
     println("Y 또는 N 을 입력해 주세요")
     var reGameStart = readLine()
